@@ -33,7 +33,7 @@ class AlarmClock {
     }
 
     start() {
-        let checkClock = function(alarm) {
+        let checkClock = (alarm) => {
             if (alarm.time === this.getCurrentFormattedTime()) {
                 return alarm.callback();
             }
@@ -43,15 +43,10 @@ class AlarmClock {
                 this.alarmCollection.forEach(alarm => checkClock(alarm));
             }, 60);
         }
-        return;/* Создайте функцию проверки (checkClock), которая принимает звонок и проверяет: 
-        если текущее время совпадает со временем звонка, то вызывайте колбек.
-        Если значение идентификатора текущего таймера отсутствует, то создайте новый интервал.
-        В этом интервале реализуйте функцию, которая будет перебирать все звонки, и для 
-        каждого вызывать функцию checkClock.
-        Результат функции setInterval сохраните в свойстве идентификатора текущего таймера. */
+        return;
     }
 
-    stop() { //не трогай, тест прошел
+    stop() { 
         if(this.timerId !== null) {
             clearInterval(this.timerId);
             this.timerId = null;
@@ -59,12 +54,12 @@ class AlarmClock {
     } 
 
 
-    printAlarms() {//хз но лучше не трогай
+    printAlarms() {
         this.alarmCollection.forEach(item => console.log(item.id + ':' + item.time));
     }
 
 
-    clearAlarms() {//не трогай тест прошел
+    clearAlarms() {
         this.stop();
         this.alarmCollection = [];
     }  
@@ -74,13 +69,17 @@ class AlarmClock {
 
 function testCase() {
     let testAlarm = new AlarmClock;
-    testAlarm.addClock('01:30', () => console.log ('дайте кофи!'), 1);
-    testAlarm.addClock('01:32', () => console.log ('КОООфи'), 2);
-    testAlarm.addClock('01:34', () => console.log ('где мой кофе??'), 3);
-    testAlarm.addClock('01:36', () => console.log ('пора бы поспать'), 4);
-    testAlarm.removeClock(4);
     testAlarm.start();
-    testAlarm.stop();
+    testAlarm.addClock('14:22', () => console.log ('дайте кофи!'), 1);
+    testAlarm.addClock('14:23', () => console.log ('КОООфи'), 2);
+    testAlarm.addClock('14:24', () => console.log ('где мой кофе?'), 3);
+    testAlarm.addClock('14:25', () => console.log ('пора бы поспать'), 4);
     testAlarm.printAlarms();
+    testAlarm.removeClock(4);
+    testAlarm.addClock('14:26', () => {
+        testAlarm.stop();
+        console.log ('спать еще рано');
+        }, 5);
+    testAlarm.printAlarms();  
 }
 testCase();
